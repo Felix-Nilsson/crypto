@@ -3,7 +3,7 @@ import math
 
 
 def elgamal_keygen():
-    # We pick a random prime p (256<p<100 for practical purposes and to work with unicode)
+    # We pick a random prime p (256<p<1000 for practical purposes and to work with unicode)
     primes = [x for x in range(257, 1000) if is_prime(x)]
     p = random.choice(primes)
 

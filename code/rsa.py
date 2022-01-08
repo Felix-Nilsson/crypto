@@ -4,9 +4,8 @@ import random
 
 def rsa_keygen():
     primes = [x for x in range(100, 500) if is_prime(x)]
-    p = random.choice(primes)
-    primes.remove(p)
-    q = random.choice(primes)
+
+    p, q = random.sample(primes, 2)
 
     n = p * q
 
@@ -20,7 +19,7 @@ def rsa_keygen():
     # it will be public and used for encryption
     # it is not allowed to have e = d, since d is supposed to be private
     while True:
-        e = random.randint(1, c-1)
+        e = random.randint(1, c - 1)
 
         if math.gcd(c, e) == 1 and e != pow(e, -1, c):
             break
@@ -45,7 +44,7 @@ def rsa_encrypt(m, n, e):
 
 def rsa_decrypt(c, n, d):
     # can only be done with the private key d
-    # c = m^e and since d is mod.inv. m = c^d = (m^e)^d
+    # c = m^e and since d is mod.inv. c^d = (m^e)^d = m
     m = c ** d % n
     return m
 
