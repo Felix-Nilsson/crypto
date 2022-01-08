@@ -66,21 +66,21 @@ def lcm(a, b):
     return abs(a * b) // math.gcd(a, b)
 
 
-def rsa_encrypt_string(m):
-    m_ascii = [ord(c) for c in m]
-    m_ascii_enc = []
-    for c in m_ascii:
-        m_ascii_enc.append(rsa_encrypt(c, b_public[0], b_public[1]))
-    return m_ascii_enc
+def rsa_encrypt_string(m, pub):
+    m_unicode = [ord(c) for c in m]
+    c = []
+    for i in m_unicode:
+        c.append(rsa_encrypt(i, pub[0], pub[1]))
+    return c
 
 
-def rsa_decrypt_string(m_ascii_enc):
-    m_ascii_dec = []
-    for c in m_ascii_enc:
-        m_ascii_dec.append(rsa_decrypt(c, b_public[0], b_private))
+def rsa_decrypt_string(c, priv, pub):
+    m_unicode = []
+    for i in c:
+        m_unicode.append(rsa_decrypt(i, pub[0], priv))
 
-    m_dec = [chr(x) for x in m_ascii_dec]
-    m = ''.join(m_dec)
+    m = ''.join([chr(x) for x in m_unicode])
+
     return m
 
 
@@ -98,18 +98,18 @@ m = "Hello Bob! from Alice"
 
 # She encrypts every character and sends bob an array of encrypted characters
 # in reality you use some known padding scheme, not an array of characters
-m_ascii_enc = rsa_encrypt_string(m)
+m_encrypted = rsa_encrypt_string(m, b_public)
 
 print("Alice's encrypted the message: \"" + str(m) + "\"")
-print("She encrypted it to: ", m_ascii_enc)
+print("She encrypted it to: ", m_encrypted)
 
 # Bob receives m_ascii_enc and only he can decrypt since d is private
 # He decrypts every element of the array and joins the array to get m
 
-m_dec = rsa_decrypt_string(m_ascii_enc)
+m_decrypted = rsa_decrypt_string(m_encrypted, b_private, b_public)
 
-print("Bob decrypted it to: \"" + m_dec + "\"")
-if m == m_dec:
+print("Bob decrypted it to: \"" + m_decrypted + "\"")
+if m == m_decrypted:
     print("The message was recovered successfully")
 else:
     print("The message was not recovered")
